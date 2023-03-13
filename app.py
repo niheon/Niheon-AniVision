@@ -71,10 +71,3 @@ if uploaded_file is not None:
             st.write("Awesome! Thank you for your feedback!")
         elif feedback == "No":
             st.write("Sorry to about that. Please try a different image. We will try to improve the model in the future.")
-
-        """if feedback == "Yes":
-            st.write("Thank you for confirming the prediction!", icon="✅")
-        elif feedback == "No":
-            st.write("We apologize for the incorrect prediction. Please try again with a different image.")
-        else:
-            st.warning("Please provide feedback on the predicted animal.")"""
