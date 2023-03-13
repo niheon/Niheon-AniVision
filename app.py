@@ -66,8 +66,15 @@ if uploaded_file is not None:
             st.title("Sorry, we are unable to predict")
 
         # Collect user feedback
-        feedback = st.selectbox("Is the predicted animal correct?", ["Yes", "No"])
+        feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
+        # Save the user feedback to a file and display a message
         if feedback == "Yes":
-            st.write("Awesome! Thank you for your feedback!")
+            with open("feedback.txt", "a") as f:
+                f.write("{}: {}\n".format(uploaded_file.name, "correct"))
+            st.success("Thank you for confirming the prediction!")
         elif feedback == "No":
-            st.write("Sorry to about that. Please try a different image. We will try to improve the model in the future.")
+            with open("feedback.txt", "a") as f:
+                f.write("{}: {}\n".format(uploaded_file.name, "incorrect"))
+            st.error("We apologize for the incorrect prediction. Please try again with a different image.")
+        else:
+            st.warning("Please provide feedback on the predicted animal.")
