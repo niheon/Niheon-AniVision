@@ -71,7 +71,7 @@ if uploaded_file is not None:
         if feedback == "Yes":
             with open("feedback.txt", "a") as f:
                 f.write("{}: {}\n".format(uploaded_file.name, "correct"))
-            st.success("Thank you for confirming the prediction!")
+            st.success("Thank you for confirming the prediction!", icon="✅")
         elif feedback == "No":
             with open("feedback.txt", "a") as f:
                 f.write("{}: {}\n".format(uploaded_file.name, "incorrect"))
