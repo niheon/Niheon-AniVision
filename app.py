@@ -30,8 +30,7 @@ animal_dict = {0: 'dog',
                3: 'butterfly',
                4: 'chicken',
                5: 'cat',
-               6: 'cow',
-               7: 'penguin'}
+               6: 'cow'}
 
 # Run app
 if uploaded_file is not None:
@@ -65,3 +64,6 @@ if uploaded_file is not None:
         except:
             # Display an error message if the prediction fails
             st.title("Sorry, we are unable to predict")
+
+    # Collect user feedback
+    feedback = st.selectbox("Is the predicted animal correct?", ["Yes", "No"])
