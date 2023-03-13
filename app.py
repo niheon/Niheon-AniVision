@@ -5,6 +5,8 @@ import numpy as np  # for working with numerical data
 import tensorflow as tf  # for loading and using the pre-trained model
 from tensorflow.keras.preprocessing import image  # for preprocessing images
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input as mobilenet_v2_preprocess_input  # for using MobileNetV2 model for preprocessing
+from tensorflow.keras.applications.mobilenet_v2 import decode_predictions  # for decoding the model predictions
+from tensorflow.keras import backend as K  # for accessing the model layers and gradients
 
 # Set page title
 st.set_page_config(
@@ -68,6 +70,40 @@ if uploaded_file is not None:
         # Collect user feedback
         feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
         if feedback == "Yes":
-            st.write("Awesome! Thank you for your feedback!")
+            st.write("Thank you for confirming the prediction!", icon="✅")
         elif feedback == "No":
-            st.write("Sorry to about that. Please try a different image. We will try to improve the model in the future.")
+            st.write("We apologize for the incorrect prediction. Please try again with a different image.")
+        else:
+            st.warning("Please provide feedback on the predicted animal.")
+
+        # Generate Grad-CAM visualization
+        # Get the last convolutional layer of the model
+        last_conv_layer = model.get_layer('Conv_1')
+        # Get the gradient tape context
+        tape = K.GradientTape()
+        # Start the gradient tape context
+        with tape:
+            # Feed the image into the model and compute the activations of the last convolutional layer and the prediction
+            conv_output, predictions = model(img_reshape)
+            # Get the predicted class activation
+            pred_class_activation = predictions[:,predicted_class]
+        # Compute the gradients of the predicted class activation with respect to the output feature map of the last convolutional layer
+        grads = tape.gradient(pred_class_activation, conv_output)
+        # Compute the global average pooling of the gradients
+        pooled_grads = K.mean(grads, axis=(0, 1, 2))
+        # Multiply the pooled gradients with the output feature map of the last convolutional layer
+        cam = np.multiply(pooled_grads, conv_output)
+        # Compute the average of the resulting feature maps along the channel dimension
+        cam = np.mean(cam, axis=-1)
+        # Apply ReLU activation to the resulting map
+        cam = np.maximum(cam, 0)
+        # Normalize the map
+        cam = cam / np.max(cam)
+        # Resize the map to match the size of the input image
+        cam = cv2.resize(cam, (img.shape[1], img.shape[0]))
+        # Convert the map to 3-channel color heatmap
+        heatmap = cv2.applyColorMap(np.uint8(255*cam), cv2.COLORMAP_JET)
+        # Blend the heatmap with the input image using an alpha value of 0.5
+        blended_image = cv2.addWeighted(img, 0.5, heatmap, 0.5, 0)
+        # Display the blended image with the Grad-CAM heatmap overlay
+        st.image(blended_image, channels="RGB")
