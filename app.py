@@ -65,5 +65,9 @@ if uploaded_file is not None:
             # Display an error message if the prediction fails
             st.title("Sorry, we are unable to predict")
 
-    # Collect user feedback
-    feedback = st.selectbox("Is the predicted animal correct?", ["Yes", "No"])
+        # Collect user feedback
+        feedback = st.selectbox("Is the predicted animal correct?", ["Yes", "No"])
+        if feedback == "Yes":
+            st.write("Awesome! Thank you for your feedback!")
+        else:
+            st.write("Sorry to about that. Please try a different image. We will try to improve the model in the future.")
