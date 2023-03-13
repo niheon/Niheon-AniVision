@@ -18,7 +18,7 @@ with st.spinner('Loading Model...'):
 # Set up UI components
 st.title("Niheon AniVision")
 st.markdown("Niheon AniVision is an AI-powered easy-to-use app for identifying animals (dog, horse, elephant, butterfly, chicken, cat, cow) in any uploaded image. Explore the wonders of wildlife and discover new creatures with just a few clicks. The app may not be able to predict all animals depending on the uploaded image, but it's still a fun way to learn about some animals.")
-st.write('Try it with some of the [sample images].(https://github.com/niheon/Niheon-AniVision)', unsafe_allow_html=True)
+st.write('Try it with some of the [sample images](https://github.com/niheon/Niheon-AniVision)', unsafe_allow_html=True)
 
 # Upload image file
 uploaded_file = st.file_uploader("Choose an image file", type=["jpg","png"])
