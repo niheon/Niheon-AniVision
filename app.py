@@ -69,5 +69,5 @@ if uploaded_file is not None:
         feedback = st.selectbox("Is the predicted animal correct?", ["Yes", "No"])
         if feedback == "Yes":
             st.write("Awesome! Thank you for your feedback!")
-        else:
+        elif feedback == "No":
             st.write("Sorry to about that. Please try a different image. We will try to improve the model in the future.")
