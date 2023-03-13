@@ -30,7 +30,8 @@ animal_dict = {0: 'dog',
                3: 'butterfly',
                4: 'chicken',
                5: 'cat',
-               6: 'cow'}
+               6: 'cow'
+               7: 'penguin'}
 
 # Run app
 if uploaded_file is not None:
