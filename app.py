@@ -69,8 +69,8 @@ if uploaded_file is not None:
         feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
         # Save the user feedback to a file and display a message
         if feedback == "Yes":
-            st.success("Thank you for confirming the prediction!", icon="✅")
+            st.write("Thank you for confirming the prediction!", icon="✅")
         elif feedback == "No":
-            st.error("We apologize for the incorrect prediction. Please try again with a different image.")
+            st.write("We apologize for the incorrect prediction. Please try again with a different image.")
         else:
             st.warning("Please provide feedback on the predicted animal.")
