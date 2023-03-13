@@ -17,7 +17,7 @@ with st.spinner('Loading Model...'):
 
 # Set up UI components
 st.title("Niheon AniVision")
-st.subheader('Niheon AniVision is an AI-powered easy-to-use app for identifying the species of an animal in any uploaded image. Explore the wonders of wildlife and discover new creatures with just a few clicks.')
+st.markdown('Niheon AniVision is an AI-powered easy-to-use app for identifying the species of an animal in any uploaded image. Explore the wonders of wildlife and discover new creatures with just a few clicks.')
 
 # Upload image file
 uploaded_file = st.file_uploader("Choose an image file", type=["jpg","png"])
