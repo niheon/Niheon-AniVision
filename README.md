@@ -1,7 +1,7 @@
 # Niheon AniVision
 
 ## Description
-Niheon AniVision is an AI-powered app that can identify the species of an animal in any uploaded image. With just a few clicks, you can explore the wonders of wildlife and discover new creatures.
+Niheon AniVision is an AI-powered app that can identify the an animal in any uploaded image. With just a few clicks, you can explore the wonders of wildlife and discover new creatures.
 
 The app uses a pre-trained machine learning model, MobileNetV2 model (which has been trained on a large dataset of animal images) to identify an animal in an uploaded image.
 
