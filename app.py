@@ -86,7 +86,7 @@ if uploaded_file is not None:
             # Feed the image into the model and compute the activations of the last convolutional layer and the prediction
             conv_output, predictions = model(img_reshape)
             # Get the predicted class activation
-            pred_class_activation = predictions[:,predicted_class]
+            pred_class_activation = predictions[:,animal_dict]
         # Compute the gradients of the predicted class activation with respect to the output feature map of the last convolutional layer
         grads = tape.gradient(pred_class_activation, conv_output)
         # Compute the global average pooling of the gradients
