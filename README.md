@@ -23,7 +23,7 @@ You can use pip to install the requirements text.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/<username>/Niheon-AniVision.git
+git clone https://github.com/niheon/Niheon-AniVision.git
 ```
 
 2. Change to the project directory:
