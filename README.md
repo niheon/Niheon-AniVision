@@ -11,14 +11,12 @@ The predicted animal is displayed on the screen, along with the uploaded image.
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-## Prerequisites
+## Requirements
 Before running the project, make sure you have the following installed:
 
-Python 3
-Streamlit
-OpenCV
-Numpy
-TensorFlow
+Python 3, Streamlit, OpenCV, Numpy, TensorFlow.
+
+You can use pip to install the requirements text.
 
 ## Installing
 
@@ -46,7 +44,7 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
-This will start the app on your local server, and you can access it by visiting http://localhost:8501 in your web browser.
+This will start the app on your local server, and you can access it by visiting localhost in your web browser.
 
 2. Upload an image file by clicking the "Choose an image file" button.
 
@@ -56,10 +54,10 @@ Click the "Predict Animal" button to get a prediction of the animal in the uploa
 Try a live demo of the [app](https://niheon-niheon-anivision-app-hzgh85.streamlit.app/).
 
 ## Built With
-Streamlit - The web framework used
-OpenCV - Library for computer vision tasks
-NumPy - Library for numerical computing
-TensorFlow - Open-source machine learning framework
+- Streamlit - The web framework used
+- OpenCV - Library for computer vision tasks
+- NumPy - Library for numerical computing
+- TensorFlow - Open-source machine learning framework
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
