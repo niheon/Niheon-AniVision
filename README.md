@@ -62,6 +62,6 @@ Try a live demo of the [app](https://niheon-niheon-anivision-app-hzgh85.streamli
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Acknowledgments
-MobileNetV2 - The pre-trained model used in this app.
-Animal-10 - The dataset used to train the model.
+## Acknowledgments
+- MobileNetV2 - The pre-trained model used in this app.
+- Animal-10 - The dataset used to train the model.
