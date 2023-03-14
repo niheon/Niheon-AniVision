@@ -70,15 +70,15 @@ if uploaded_file is not None:
         # Collect user feedback
         feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
         if feedback == "Yes":
-            st.write("Thank you for confirming the prediction!", icon="✅")
+            st.markdown("Thank you for confirming the prediction!")
         elif feedback == "No":
-            st.write("We apologize for the incorrect prediction. Please try again with a different image.")
+            st.markdown("We apologize for the incorrect prediction. Please try again with a different image.")
         else:
             st.warning("Please provide feedback on the predicted animal.")
 
         # Generate Grad-CAM visualization
         # Get the last convolutional layer of the model
-        last_conv_layer = model.get_layer('Conv_1')
+        last_conv_layer = model.layers[-1]
         # Get the gradient tape context
         tape = K.GradientTape()
         # Start the gradient tape context
