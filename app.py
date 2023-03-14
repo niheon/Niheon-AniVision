@@ -100,10 +100,10 @@ if uploaded_file is not None:
         # Normalize the map
         cam = cam / np.max(cam)
         # Resize the map to match the size of the input image
-        cam = cv2.resize(cam, (img.shape[1], img.shape[0]))
+        cam = model.layers[1].resize(cam, (img.shape[1], img.shape[0]))
         # Convert the map to 3-channel color heatmap
-        heatmap = cv2.applyColorMap(np.uint8(255*cam), cv2.COLORMAP_JET)
+        heatmap = model.layers[1].applyColorMap(np.uint8(255*cam), cv2.COLORMAP_JET)
         # Blend the heatmap with the input image using an alpha value of 0.5
-        blended_image = cv2.addWeighted(img, 0.5, heatmap, 0.5, 0)
+        blended_image = model.layers[1].addWeighted(img, 0.5, heatmap, 0.5, 0)
         # Display the blended image with the Grad-CAM heatmap overlay
         st.image(blended_image, channels="RGB")
