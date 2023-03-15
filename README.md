@@ -1,6 +1,6 @@
 # Niheon AniVision
 
-![](https://github.com/niheon/Niheon-AniVision/blob/main/Niheon_AniVision_Demo_Github_2.gif)
+![](https://github.com/niheon/Niheon-AniVision/blob/main/Niheon_AniVision_Demo_Github_2.gif =250x250)
 
 ## Description
 Niheon AniVision is an AI-powered app that can identify the an animal in any uploaded image. With just a few clicks, you can explore the wonders of wildlife and discover new creatures.
