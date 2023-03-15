@@ -67,11 +67,11 @@ if uploaded_file is not None:
             # Display an error message if the prediction fails
             st.title("Sorry, we are unable to predict")
 
-        # Collect user feedback
-        feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
-        if feedback == "Yes":
-            st.markdown("Thank you for confirming the prediction!")
-        elif feedback == "No":
-            st.markdown("We apologize for the incorrect prediction. Please try again with a different image.")
-        else:
-            st.warning("Please provide feedback on the predicted animal.")
+    # Collect user feedback
+    feedback = st.selectbox("Is the predicted animal correct?", ["","Yes", "No"])
+    if feedback == "Yes":
+        st.markdown("Thank you for confirming the prediction!")
+    elif feedback == "No":
+        st.markdown("We apologize for the incorrect prediction. Please try again with a different image.")
+    else:
+        st.warning("Please provide feedback on the predicted animal.")
