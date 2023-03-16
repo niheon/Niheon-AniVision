@@ -4,6 +4,8 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input as mobilenet_v2_preprocess_input
+from tensorflow.keras.applications.mobilenet_v2 import decode_predictions
+from tensorflow.keras import backend as K
 
 # Set page title
 st.set_page_config(
@@ -13,18 +15,6 @@ st.set_page_config(
 # Load pre-trained model
 with st.spinner('Loading Model...'):
     model = tf.keras.models.load_model("model/animal.hdf5")
-    
-    # Find the last convolutional layer using indexing
-    last_conv_layer = None
-    for layer in reversed(model.layers):
-        if isinstance(layer, tf.keras.layers.Conv2D):
-            last_conv_layer = layer
-            break
-    
-    if last_conv_layer is None:
-        st.error("Could not find the last convolutional layer in the model.")
-    else:
-        classifier_layer = tf.keras.Sequential([tf.keras.layers.GlobalAveragePooling2D(), model.layers[-1]])
 
 # Set up UI components
 st.title("Niheon AniVision")
@@ -43,37 +33,22 @@ animal_dict = {0: 'dog',
                5: 'cat',
                6: 'cow'}
 
-def get_gradcam_heatmap(img_array, model, last_conv_layer, classifier_layer):
-    img_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
-    with tf.GradientTape() as tape:
-        last_conv_layer_output = last_conv_layer(img_tensor)
-        tape.watch(last_conv_layer_output)
-        preds = classifier_layer(last_conv_layer_output)
-        top_pred_index = tf.argmax(preds[0])
-        top_class_channel = preds[:, top_pred_index]
-
-    grads = tape.gradient(top_class_channel, last_conv_layer_output)
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
-    heatmap = tf.matmul(last_conv_layer_output, pooled_grads[..., tf.newaxis])
-    heatmap = tf.squeeze(heatmap)
-
-    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
-    return heatmap.numpy()
-
+# Create session state to store prediction made
 def get_or_create_session_state():
     if "session_state" not in st.session_state:
         st.session_state["session_state"] = {}
     return st.session_state["session_state"]
 
+# Run app if image file is uploaded
 if uploaded_file is not None:
 
     # Read and preprocess image
     img_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     img = cv2.imdecode(img_bytes, 1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_resize = cv2.resize(img, (224, 224))
+    img_resize = cv2.resize(img, (224,224))
     img_resize = mobilenet_v2_preprocess_input(img_resize)
-    img_reshape = img_resize[np.newaxis, ...]
+    img_reshape = img_resize[np.newaxis,...]
 
     # Display image
     st.image(img, channels="RGB")
@@ -84,31 +59,20 @@ if uploaded_file is not None:
         prediction = model.predict(img_reshape).argmax()
         try:
             st.title("Predicted Animal is {}".format(animal_dict[prediction]))
-
-            # Grad-CAM visualization
-            heatmap = get_gradcam_heatmap(img_reshape, model, last_conv_layer, classifier_layer)
-            heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
-            heatmap = np.uint8(255 * heatmap)
-            heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
-            superimposed_img = heatmap * 0.4 + img
-            superimposed_img = np.clip(superimposed_img, 0, 255).astype(np.uint8)
-            st.image(superimposed_img, caption="Grad-CAM Visualization", use_column_width=True)
-
+            session_state = get_or_create_session_state()
+            session_state["prediction_made"] = True
         except:
             st.title("Sorry, we are unable to predict")
 
-        # Initialize session state
-        session_state = get_or_create_session_state()
-
-        # Collect user feedback
-        feedback = session_state.get("feedback", "")
-        if feedback == "":
-            feedback = st.selectbox("Is the predicted animal correct?", ["", "Yes", "No"])
-            session_state["feedback"] = feedback
-
+    # Check if the prediction has been made before displaying the feedback selectbox
+    session_state = get_or_create_session_state()
+    if "prediction_made" in session_state and session_state["prediction_made"]:
+        feedback = st.selectbox("Is the predicted animal correct?", ["", "Yes", "No"])
         if feedback == "Yes":
             st.markdown("Thank you for confirming the prediction!")
+            session_state["prediction_made"] = False
         elif feedback == "No":
             st.markdown("We apologize for the incorrect prediction. Please try again with a different image.")
+            session_state["prediction_made"] = False
         else:
             st.warning("Please provide feedback on the predicted animal.")
