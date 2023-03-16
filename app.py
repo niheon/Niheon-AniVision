@@ -60,6 +60,11 @@ def get_gradcam_heatmap(img_array, model, last_conv_layer, classifier_layer):
     heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
     return heatmap.numpy()
 
+def get_or_create_session_state():
+    if "session_state" not in st.session_state:
+        st.session_state["session_state"] = {}
+    return st.session_state["session_state"]
+
 if uploaded_file is not None:
 
     # Read and preprocess image
@@ -92,7 +97,15 @@ if uploaded_file is not None:
         except:
             st.title("Sorry, we are unable to predict")
 
-        feedback = st.selectbox("Is the predicted animal correct?", ["", "Yes", "No"])
+        # Initialize session state
+        session_state = get_or_create_session_state()
+
+        # Collect user feedback
+        feedback = session_state.get("feedback", "")
+        if feedback == "":
+            feedback = st.selectbox("Is the predicted animal correct?", ["", "Yes", "No"])
+            session_state["feedback"] = feedback
+
         if feedback == "Yes":
             st.markdown("Thank you for confirming the prediction!")
         elif feedback == "No":
